@@ -123,8 +123,14 @@ bool update() {
 		break;
 	}
 
+	// Update next snake index
+	int nextSnakeIndex = currentSnakeIndex + 1;
+	if (nextSnakeIndex == snakeLength) {
+		nextSnakeIndex = 0;
+	}
+
 	// Check if next position is possible
-	if (currentDirection != 0 && (arena[nextArenaIndex] == snakeChar || arena[nextArenaIndex] == wallChar)) {
+	if (currentDirection != 0 && ((arena[nextArenaIndex] == snakeChar && nextArenaIndex != snakeIndices[nextSnakeIndex]) || arena[nextArenaIndex] == wallChar)) {
 		onDeath();
 		return false;
 	}
@@ -136,12 +142,7 @@ bool update() {
 	}
 
 	// Update arena
-	int nextSnakeIndex = currentSnakeIndex + 1;
 	if (!willEat) {
-		if (nextSnakeIndex == snakeLength) {
-			nextSnakeIndex = 0;
-		}
-
 		arena[snakeIndices[nextSnakeIndex]] = noneChar;
 	}
 	else {
@@ -162,8 +163,10 @@ bool update() {
 }
 
 void draw() {
-	// Clear screen
-	system("cls");
+	// Set cursor to begining.
+	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD coord = { 0, 0 };
+	SetConsoleCursorPosition(handle, coord);
 
 	// Print score
 	printf("Score : %i\n", snakeLength - 1);
