@@ -8,7 +8,7 @@
 
 const int width = 10;
 const int height = 10;
-const int loopSpeed = 5;
+const int loopSpeed = 8;
 
 Arena arena(width, height);
 Snake snake(width, height);
@@ -34,13 +34,18 @@ int main()
         update();
 
         if (isDead) {
-            displayDeathScene();
+            
             break;
         }
 
         draw();
 
         Sleep(loopTime);
+    }
+
+    // For display purpose
+    while (true) {
+
     }
 }
 
@@ -134,6 +139,7 @@ void moveSnake() {
     std::string firstPosString = arena.arena[firstSnakePos.x][firstSnakePos.y];
     if (snake.direction != Vector2Int::zero() && nextSnakePos != firstSnakePos && (nextPosString == arena.__wallStr || nextPosString == arena.__snakeStr)) {
         isDead = true;
+        displayDeathScene();
         return;
     }
 
